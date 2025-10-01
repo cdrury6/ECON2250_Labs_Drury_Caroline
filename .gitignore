@@ -4,3 +4,13 @@
 .httr-oauth
 .DS_Store
 .quarto
+
+# Quarto/R Markdown build artifacts
+*.html
+*.pdf
+*_files/
+_site/
+_freeze/
+.quarto/
+.Rproj.user
+
