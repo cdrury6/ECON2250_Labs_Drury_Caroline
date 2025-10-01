@@ -399,14 +399,37 @@ There is website that host a collection of beautiful charts you might want to vi
 
 ```{r, echo=T, eval=T}
 #| label: r graph gallery replication 1
+library(ggplot2)
+library(dplyr)
 
+lf_summary <- cps %>%
+  count(lfstatus) %>%
+  mutate(prop = n / sum(n),
+         label = paste0(n, " (", round(prop*100,1), "%)"))
+
+ggplot(lf_summary, aes(x = "", y = prop, fill = lfstatus)) +
+  geom_bar(stat = "identity", width = 1, color = "white") +
+  coord_polar("y") +
+  geom_text(aes(label = label), 
+            position = position_stack(vjust = 0.5), size = 4) +
+  labs(title = "Labor Force Status Distribution", fill = "Status") +
+  theme_void() +
+  scale_fill_manual(values = c(
+    "Employed"   = "skyblue",
+    "Unemployed" = "red",
+    "Not in LF"  = "violet"
+  ))
 ```
 
 *Visualization replication 2* \AddToHookNext{env/Highlighting/begin}{\small}
 
 ```{r, echo=T, eval=T}
 #| label: r graph gallery replication 2
-
+ggplot(cps, aes(x = gender, y = earnwk, fill = gender)) +
+  geom_violin(trim = FALSE) +
+  geom_boxplot(width = 0.1, color = "black", alpha = 0.5) +
+  labs(title = "Weekly Earnings by Gender (Violin Plot)") +
+  theme_minimal()
 ```
 
 # Wrapping up
